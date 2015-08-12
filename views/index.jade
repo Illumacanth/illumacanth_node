@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p Current Show is #{current_show}
+  input#show(type="search", placeholder="current show")
+  script(src="javascripts/jquery-2.1.4.js")
+  script(type='text/javascript').
+    $(document).ready(function(){
+      $("#show").change(function() {
+      $.ajax({
+        method: "POST",
+        url: "/save_show",
+        data: { show: $("#show").val() }
+        }).done(function( msg ) {
+        });
+        });
+      });
