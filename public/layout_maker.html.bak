@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+  <script type="text/javascript" src="jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="jquery-ui.js"></script>
+  <script type="text/javascript" src="spectrum.js"></script>
+  <link rel='stylesheet' href='spectrum.css'>
+  <link rel="stylesheet" href="jquery-ui.css">
+
+	<title>Illumacanth LED</title>
+
+</head>
+
+<body>
+
+<h1> <strike>Fishbug</strike> Illumacanth LED interface </h1>
+
+<BR>
+<form form onsubmit="return false">
+<label for=x>X position</label>
+<input type=range min=0 max=600 value=300 id=x_position oninput="outputUpdate()">
+<output for=x_position id=x>300</output>
+<BR>
+<label for=y>Y position</label>
+<input type=range min=0 max=600 value=300 id=y_position oninput="outputUpdate()">
+<output for=y_position id=y>300</output>
+<BR>
+<label for=z>Z position</label>
+<input type=range min=0 max=600 value=300 id=z_position oninput="outputUpdate()">
+<output for=z_position id=z>300</output>
+<BR>
+
+<label for=angle>Angle of orientation</label>
+<input type=range min=0 max=360 value=0 id=orientation oninput="outputUpdate()">
+<output for=orientation id=z>0</output>
+<BR>
+
+
+<label for=count>Number of LEDs</label>
+<select id=count oninput="outputUpdate()">
+  <option value=12>12</option>
+  <option value=16>16</option>
+  <option value=24>24</option>
+  <option value=60>60</option>
+</select>
+<BR>
+<button id=add_ring type="button" onclick="addRing(LEDlist)">Add Ring</button>
+<button id=add_line type="button" onclick="addLine(LEDlist,x,y)">Add Line</button>
+</form>
+<BR>
+<div id="element_list"></div>
+
+<canvas id="LED_map" width="600" height="600" style="border:1px solid #000000;">
+</canvas>
+
+<script>
+
+$.getScript("shapes.js");
+
+$(document).ready(function() {
+    var jqxhr = $.getJSON( "./default_layout.json", function() {
+      })
+        .done(function() {
+        })
+        .fail(function() {
+        })
+        .always(function() {
+        });
+      jqxhr.complete(function(data) {
+        default_data = JSON.parse(data.responseText);
+        $.each(default_data, function(index,value) {
+          if(value.shape == "ring"){
+            var this_element = new Ring(value.x,value.y,value.z,value.count);
+          }else{
+            var this_element = new Line(value.x,value.y,value.z);
+          }
+          LEDlist.push(this_element);
+          });
+        drawCanvas(LEDlist);
+      });
+
+    });
+
+
+</script>
+
+</body>
+
+</html>
+
+
