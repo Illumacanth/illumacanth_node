@@ -12,6 +12,8 @@ html(lang='en')
     h1
       strike Fishbug
       |  Illumacanth LED interface
+    h1
+      #{current_color}
     table
       tr
         td
@@ -20,19 +22,19 @@ html(lang='en')
             input#default_color(type='text')
     script.
       $(document).ready(function() {
-      var default_color = "000";
-      $("#default_color").spectrum({
-      showInput: true,
-      color: "#04F",
-      showButtons: false,
-      change: function(color) {
-      $.ajax({
-      method: "POST",
-      url: "/save_color",
-      data: { default_color: color.toHexString() }
-      }).done(function( msg ) {
-      });
-      }
-      });
+        var default_color = "!{current_color}";
+        $("#default_color").spectrum({
+          showInput: true,
+          color: default_color,
+          showButtons: false,
+          change: function(color) {
+            $.ajax({
+              method: "POST",
+              url: "/save_color",
+              data: { default_color: color.toHexString() }
+            }).done(function( msg ) {
+          });
+          }
+        });
       });
 

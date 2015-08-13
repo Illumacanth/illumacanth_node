@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var save_show = require('./routes/save_show');
 var save_color = require('./routes/save_color');
 var color_picker = require('./routes/color_picker');
+var layout_maker = require('./routes/layout_maker');
+var lightshow = require('./routes/lightshow');
 
 var app = express();
 
@@ -34,6 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/color_picker', color_picker);
+app.use('/layout_maker', layout_maker);
+app.use('/lightshow', lightshow);
 app.post('/save_show', save_show);
 app.post('/save_color', save_color);
 
