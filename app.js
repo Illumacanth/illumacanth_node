@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var save_show = require('./routes/save_show');
 var save_color = require('./routes/save_color');
+var color_picker = require('./routes/color_picker');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/color_picker', color_picker);
 app.post('/save_show', save_show);
 app.post('/save_color', save_color);
 
