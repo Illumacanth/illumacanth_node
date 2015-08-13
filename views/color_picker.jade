@@ -1,0 +1,38 @@
+doctype html
+html(lang='en')
+  head
+    meta(http-equiv='content-type', content='text/html; charset=utf-8')
+    script(type='text/javascript', src='jquery-2.1.4.js')
+    script(type='text/javascript', src='jquery-ui.js')
+    script(type='text/javascript', src='spectrum.js')
+    link(rel='stylesheet', href='spectrum.css')
+    link(rel='stylesheet', href='jquery-ui.css')
+    title Illumacanth LED
+  body
+    h1
+      strike Fishbug
+      |  Illumacanth LED interface
+    table
+      tr
+        td
+          h4 Default Color
+          form(action='#')
+            input#default_color(type='text')
+    script.
+      $(document).ready(function() {
+      var default_color = "000";
+      $("#default_color").spectrum({
+      showInput: true,
+      color: "#04F",
+      showButtons: false,
+      change: function(color) {
+      $.ajax({
+      method: "POST",
+      url: "/save_color",
+      data: { default_color: color.toHexString() }
+      }).done(function( msg ) {
+      });
+      }
+      });
+      });
+
