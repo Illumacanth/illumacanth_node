@@ -46,24 +46,20 @@ html(lang='en')
     script.
       $.getScript("shapes.js");
       $(document).ready(function() {
-      var jqxhr = $.getJSON( "./default_layout.json", function() {
-      })
-      .done(function() {
-      })
-      .fail(function() {
-      })
-      .always(function() {
-      });
-      jqxhr.complete(function(data) {
-      default_data = JSON.parse(data.responseText);
-      $.each(default_data, function(index,value) {
-      if(value.shape == "ring"){
-      var this_element = new Ring(value.x,value.y,value.z,value.count);
-      }else{
-      var this_element = new Line(value.x,value.y,value.z);
-      }
-      LEDlist.push(this_element);
-      });
-      drawCanvas(LEDlist);
-      });
+          var jqxhr = $.getJSON("./default_layout.json", function() {})
+              .done(function() {})
+              .fail(function() {})
+              .always(function() {});
+          jqxhr.complete(function(data) {
+              default_data = JSON.parse(data.responseText);
+              $.each(default_data, function(index, value) {
+                  if (value.shape == "ring") {
+                      var this_element = new Ring(value.x, value.y, value.z, value.count);
+                  } else {
+                      var this_element = new Line(value.x, value.y, value.z);
+                  }
+                  LEDlist.push(this_element);
+              });
+              drawCanvas(LEDlist);
+          });
       });
