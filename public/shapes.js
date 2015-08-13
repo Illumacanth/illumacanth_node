@@ -1,3 +1,12 @@
+var canvas = document.getElementById('LED_map');
+var context = canvas.getContext('2d');
+var x = x_position.valueAsNumber;
+var y = y_position.valueAsNumber;
+var z = z_position.valueAsNumber;
+var default_data = "";
+
+var LEDlist = [];
+
 var Ring = function (x,y,z,count) {
   this.x        = x;
   this.y        = y;

@@ -62,15 +62,6 @@
 
 $.getScript("shapes.js");
 
-var canvas = document.getElementById('LED_map');
-var context = canvas.getContext('2d');
-var x = x_position.valueAsNumber;
-var y = y_position.valueAsNumber;
-var z = z_position.valueAsNumber;
-var default_data = "";
-
-var LEDlist = [];
-
 $(document).ready(function() {
     var jqxhr = $.getJSON( "./default_layout.json", function() {
       })
