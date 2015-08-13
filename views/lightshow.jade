@@ -2,15 +2,10 @@ doctype html
 html(lang='en')
   head
     meta(http-equiv='content-type', content='text/html; charset=utf-8')
-    |   
     script(type='text/javascript', src='jquery-2.1.4.js')
-    |   
     script(type='text/javascript', src='jquery-ui.js')
-    |   
     script(type='text/javascript', src='spectrum.js')
-    |   
     link(rel='stylesheet', href='spectrum.css')
-    |   
     link(rel='stylesheet', href='jquery-ui.css')
     | &#x9;
     title Illumacanth LED
@@ -22,187 +17,37 @@ html(lang='en')
       tr
         td
           canvas#LED_map(width='600', height='600', style='border:1px solid #000000;')
-        |     
         td
           h4 Background Color
-          |       
           form(action='#')
             input#bgcolor_1(type='text')
-          |       
           h4 Waves Color
-          |       
           form(action='#')
             input#waves_color(type='text')
     script.
-      Math.radians = function(degrees) {
-      return degrees * Math.PI / 180;
-      };
-      Math.degrees = function(radians) {
-      return radians * 180 / Math.PI;
-      };
       $("#bgcolor_1").spectrum({
-      showInput: true,
-      color: "#04F"
+          showInput: true,
+          color: "#04F"
       });
       $("#waves_color").spectrum({
-      showInput: true,
-      color: "#F01"
+          showInput: true,
+          color: "#F01"
       });
-      var canvas = document.getElementById('LED_map');
-      var context = canvas.getContext('2d');
-      var LED = function(x,y,z,hue,saturation,lightness) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.hue = hue;
-      this.saturation = saturation;
-      this.lightness = lightness;
-      this.color();
-      }
-      LED.prototype.color = function(){
-      return "hsl(" + this.hue.toString() + "," + this.saturation.toString() + "%," + this.lightness.toString() + "%)";
-      }
-      LED.prototype.draw = function(context){
-      context.beginPath();
-      context.arc(this.x, this.y, 3, 0, 2 * Math.PI, false);
-      context.fillStyle = this.color();
-      context.fill();
-      }
-      var LEDlist = [];
       $(document).ready(function() {
-      var jqxhr = $.getJSON( "./default_LED.json", function() {
-      })
-      jqxhr.complete(function(data) {
-      var default_data = JSON.parse(data.responseText);
-      $.each(default_data, function(index,value) {
-      coords = value.point;
-      x = coords[0];
-      y = coords[1];
-      z = coords[2];
-      console.log(value.point);
-      this_element = new LED(x,y,z,0,0,0);
-      LEDlist.push(this_element);
+          var jqxhr = $.getJSON("./default_LED.json", function() {})
+          jqxhr.complete(function(data) {
+              var default_data = JSON.parse(data.responseText);
+              $.each(default_data, function(index, value) {
+                  coords = value.point;
+                  x = coords[0];
+                  y = coords[1];
+                  z = coords[2];
+                  console.log(value.point);
+                  this_element = new LED(x, y, z, 0, 0, 0);
+                  LEDlist.push(this_element);
+              });
+              drawCanvas(LEDlist);
+          });
       });
-      drawCanvas(LEDlist);
-      });
-      });
-      function drawCanvas(LEDlist){
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      for(var i = 0; i < LEDlist.length; i++){
-      LEDlist[i].draw(context);
-      }
-      }
-      function colorCircle(x1,y1,radius,LEDlist){
-      for(var i = 0; i < LEDlist.length; i++){
-      var led = LEDlist[i];
-      var x2 = led.x;
-      var y2 = led.y;
-      var distance = Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 );
-      led.hue = 230;
-      //    led.hue = (led.hue + (distance / radius) * 360 | 0) / 2;
-      //    led.saturation += (distance / radius) * 100 | 0;
-      led.saturation = 100;
-      led.lightness = (distance / radius) * 100 | 0;
-      }
-      }
-      function randomizeLEDColors(LEDlist){
-      for(var i = 0; i < LEDlist.length; i++){
-      led = LEDlist[i];
-      led.hue = Math.floor(Math.random()*360);
-      led.saturation = 100;
-      led.lightness = 60;
-      //    led.saturation += Math.floor(Math.random()*100);
-      //    led.lightness += Math.floor(Math.random()*100);
-      }
-      }
-      function setBackgroundColor(hue,saturation,lightness,LEDlist){
-      for(var i = 0; i < LEDlist.length; i++){
-      var led = LEDlist[i];
-      led.hue = hue;
-      led.saturation = saturation;
-      led.lightness = lightness;
-      }
-      }
-      var Show = function(patternList,LEDlist){
-      this.time = 0;
-      this.patternList = patternList;
-      this.LEDlist = LEDlist;
-      }
-      Show.prototype.updateAll = function(time){
-      for(var l = 0; l < this.LEDlist.length; l++){
-      LED = this.LEDlist[l];
-      var avg_x = 0;
-      var avg_y = 0;
-      var avg_saturation = 0;
-      var avg_lightness = 0;
-      var pat_count = this.patternList.length;
-      for(var p = 0; p < pat_count; p++){
-      pattern = this.patternList[p];
-      var hue = pattern.getHue(LED.x,LED.y);
-      avg_x = avg_x + Math.cos(Math.radians(hue)) / pat_count;
-      avg_y = avg_y + Math.sin(Math.radians(hue)) / pat_count;
-      avg_saturation = avg_saturation + pattern.getSaturation(LED.x,LED.y,LED.z,time) / pat_count;
-      avg_lightness = avg_lightness + pattern.getLightness(LED.x,LED.y,LED.z,time) / pat_count;
-      }
-      LED.hue = Math.degrees(Math.atan2(avg_y,avg_x));
-      LED.saturation = avg_saturation;
-      LED.lightness = avg_lightness;
-      }
-      //  console.log(avg_x.toString() + " " + avg_y.toString() + " " + LED.hue);
-      }
-      var bgColor = function(){
-      this.hue;
-      this.saturation;
-      this.lightness;
-      }
-      bgColor.prototype.getHue = function(x,y,z,time){
-      return this.hue;
-      }
-      bgColor.prototype.getSaturation = function(x,y,z,time){
-      return this.saturation;
-      }
-      bgColor.prototype.getLightness = function(x,y,z,time){
-      return this.lightness;
-      }
-      bgColor.prototype.setColor = function(control_id){
-      var t = $(control_id).spectrum("get");
-      hsl = t.toHsl();
-      this.hue = hsl.h;
-      this.saturation = hsl.s * 100;
-      this.lightness = hsl.l * 100;
-      }
-      var Waves = function(){
-      this.hue = 270;
-      this.saturation = 100;
-      this.value = 100;
-      }
-      Waves.prototype.getHue = function(x,y,z,time){
-      return this.hue;
-      }
-      Waves.prototype.getSaturation = function(x,y,z,time){
-      return 100;
-      }
-      Waves.prototype.getLightness = function(x,y,z,time){
-      return this.lightness * (Math.sin(time + x / 100) + 1) / 2;
-      }
-      Waves.prototype.setColor = function(control_id){
-      var t = $(control_id).spectrum("get");
-      hsl = t.toHsl();
-      this.hue = hsl.h;
-      this.saturation = hsl.s * 100;
-      this.lightness = hsl.l * 100;
-      }
-      var patternList = [];
-      var thisBGColor = new bgColor();
-      patternList.push(thisBGColor);
-      var thisWaves = new Waves();
-      patternList.push(thisWaves);
-      var currentShow = new Show(patternList,LEDlist);
-      var time = 0;
-      setInterval(function(){
-      time++;
-      thisBGColor.setColor("#bgcolor_1");
-      thisWaves.setColor("#waves_color");
-      currentShow.updateAll(time);
-      drawCanvas(LEDlist);
-      },100)
+      $.getScript("show_math.js");
+
