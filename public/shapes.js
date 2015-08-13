@@ -116,8 +116,9 @@ function drawCanvas(LEDlist){
   var current_angle = orientation.valueAsNumber;
 
   drawCross(centerX,centerY,context);
-  drawArrow(centerX,centerY - 10,current_angle,context)
+  drawArrow(centerX,centerY - 10,current_angle,context);
 
+  update_element_list(LEDlist);
 }
 
 function drawRing(centerX,centerY,count,ring_radius,context) {
@@ -190,3 +191,9 @@ function drawArrow(x,y,orientation,context){
   context.stroke();
 }
 
+function update_element_list() {
+    $("#element_list").empty();
+    $.each(LEDlist, function(index, LED) {
+        $("#element_list").append(LED.shape + " " + LED.count + "<SPAN style='color:red' class = 'delete_led' id = '" + LED.id + "'> delete </SPAN><BR>");
+    });
+}

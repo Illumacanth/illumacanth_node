@@ -41,25 +41,35 @@ html(lang='en')
       button#add_ring(type='button', onclick='addRing(LEDlist)') Add Ring
       button#add_line(type='button', onclick='addLine(LEDlist,x,y)') Add Line
     br
-    #element_list
-    canvas#LED_map(width='600', height='600', style='border:1px solid #000000;')
-    script.
-      $.getScript("shapes.js");
-      $(document).ready(function() {
-          var jqxhr = $.getJSON("./default_layout.json", function() {})
-              .done(function() {})
-              .fail(function() {})
-              .always(function() {});
-          jqxhr.complete(function(data) {
-              default_data = JSON.parse(data.responseText);
-              $.each(default_data, function(index, value) {
-                  if (value.shape == "ring") {
-                      var this_element = new Ring(value.x, value.y, value.z, value.count);
-                  } else {
-                      var this_element = new Line(value.x, value.y, value.z);
-                  }
-                  LEDlist.push(this_element);
-              });
-              drawCanvas(LEDlist);
+    table
+      tr
+        td
+          canvas#LED_map(width='600', height='600', style='border:1px solid #000000;')
+        td
+          #element_list
+script.
+  $.getScript("shapes.js");
+  $(document).ready(function() {
+      var jqxhr = $.getJSON("./default_layout.json", function() {})
+          .done(function() {})
+          .fail(function() {})
+          .always(function() {});
+      jqxhr.complete(function(data) {
+          default_data = JSON.parse(data.responseText);
+          $.each(default_data, function(index, value) {
+              if (value.shape == "ring") {
+                  var this_element = new Ring(value.x, value.y, value.z, value.count);
+              } else {
+                  var this_element = new Line(value.x, value.y, value.z);
+              }
+              LEDlist.push(this_element);
           });
+          drawCanvas(LEDlist);
+          update_element_list(LEDlist);
       });
+  });
+  function update_element_list() {
+      $.each(LEDlist, function(index, LED) {
+          $("#element_list").append(LED.shape + " " + LED.count + "<BR>");
+      })
+  }
