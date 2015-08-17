@@ -191,9 +191,16 @@ function drawArrow(x,y,orientation,context){
   context.stroke();
 }
 
+function element_interface(index, LED) {
+  var box_string = LED.shape + " " + LED.count;
+  box_string += "<SPAN style='color:red' class = 'delete_led' id = '" + index + "'> delete </SPAN><BR>";
+  box_string += "<script> </script>";
+  return box_string;
+}
+
 function update_element_list() {
     $("#element_list").empty();
     $.each(LEDlist, function(index, LED) {
-        $("#element_list").append(LED.shape + " " + LED.count + "<SPAN style='color:red' class = 'delete_led' id = '" + LED.id + "'> delete </SPAN><BR>");
+        $("#element_list").append(element_interface(index, LED) );
     });
 }

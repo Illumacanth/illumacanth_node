@@ -20,6 +20,13 @@ html(lang='en')
           h4 Default Color
           form(action='#')
             input#default_color(type='text')
+    h1
+      | beginning of slection range
+    input(type='textbox', id='begin_range')
+    h1
+      | end of slection range
+    input(type='textbox', id='end_range')
+
     script.
       $(document).ready(function() {
         var default_color = "!{current_color}";
@@ -35,6 +42,22 @@ html(lang='en')
             }).done(function( msg ) {
           });
           }
+        });
+        $("#begin_range").change(function() {
+            $.ajax({
+              method: "POST",
+              url: "/save_begin_range",
+              data: { begin_range: $("#begin_range").val() }
+            }).done(function( msg ) {
+          });
+          });
+        $("#end_range").change(function() {
+            $.ajax({
+              method: "POST",
+              url: "/save_end_range",
+              data: { end_range: $("#end_range").val() }
+            }).done(function( msg ) {
+          });
         });
       });
 

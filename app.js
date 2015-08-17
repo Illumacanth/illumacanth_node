@@ -9,6 +9,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var save_show = require('./routes/save_show');
 var save_color = require('./routes/save_color');
+var save_begin_range = require('./routes/save_begin_range');
+var save_end_range = require('./routes/save_end_range');
 var color_picker = require('./routes/color_picker');
 var layout_maker = require('./routes/layout_maker');
 var lightshow = require('./routes/lightshow');
@@ -40,6 +42,8 @@ app.use('/layout_maker', layout_maker);
 app.use('/lightshow', lightshow);
 app.post('/save_show', save_show);
 app.post('/save_color', save_color);
+app.post('/save_begin_range', save_begin_range);
+app.post('/save_end_range', save_end_range);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -79,18 +83,45 @@ var OPC = new require('./opc')
 var client = new OPC('localhost', 7890);
 
 function draw() {
-    var millis = new Date().getTime();
 
-    for (var pixel = 0; pixel < 512; pixel++)
-    {
+    redis_client.mget(['default_color','begin_range','end_range'], function(err, reply) {
+      var default_color = reply[0];
+      var begin_range = reply[1];
+      var end_range = reply[2];
+
+      var R = hexToR(default_color);
+      var G = hexToG(default_color);
+      var B = hexToB(default_color);
+
+      function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+      function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+      function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+      function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+
+
+      var millis = new Date().getTime();
+
+      for (var pixel = 0; pixel < 512; pixel++)
+      {
         var t = pixel * 0.2 + millis * 0.002;
-        var red = 128 + 96 * Math.sin(t);
-        var green = 128 + 96 * Math.sin(t + 0.1);
-        var blue = 128 + 96 * Math.sin(t + 0.3);
+        var red = 0;
+        var green = 0;
+        var blue = 0;
+        if(pixel > begin_range && pixel < end_range){
+          red = 256;
+          green = 256;
+          blue = 256;
+          console.log("hi there");
+        }else {
+          red = 256 * Math.sin(t) * (R/256);
+          green = 256 * Math.sin(t + 0.3) * (G/256);
+          blue = 256 * Math.sin(t + 0.6) * (B/256);
+        }
+          client.setPixel(pixel, red, green, blue);
+      }
 
-        client.setPixel(pixel, red, green, blue);
-    }
-    client.writePixels();
+      client.writePixels();
+    });
 }
 
 setInterval(draw, 30);
