@@ -111,7 +111,6 @@ function draw() {
           red = 256;
           green = 256;
           blue = 256;
-          console.log("hi there");
         }else {
           red = 256 * Math.sin(t) * (R/256);
           green = 256 * Math.sin(t + 0.3) * (G/256);
