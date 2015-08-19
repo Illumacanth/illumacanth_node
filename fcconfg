@@ -20,63 +20,63 @@
                 "type": "fadecandy",
                 "serial": "PFDNPLBPHXSPQJAR",
                 "map": [
-                    [ 1, 0, 0, 512 ],
+                    [ 1, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "KWMIOWRPTDIHCFKL",
                 "map": [
-                    [ 2, 0, 0, 512 ],
+                    [ 2, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "ZJJHECKOFVCHYXKD",
                 "map": [
-                    [ 3, 0, 0, 512 ],
+                    [ 3, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "AKUSIKUKNRSRMBOD",
                 "map": [
-                    [ 4, 0, 0, 512 ],
+                    [ 4, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "JBGQFRGMFTGBOHUB",
                 "map": [
-                    [ 5, 0, 0, 512 ],
+                    [ 5, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "NLDFUYVRXPYXMBUT",
                 "map": [
-                    [ 6, 0, 0, 512 ],
+                    [ 6, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "LRRHFLLXFLUFUNAB",
                 "map": [
-                    [ 7, 0, 0, 512 ],
+                    [ 7, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "UAWMHVVVHTIFULCR",
                 "map": [
-                    [ 8, 0, 0, 512 ],
+                    [ 8, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "SAAQYYASVRKXGHSN",
                 "map": [
-                    [ 9, 0, 0, 512 ],
+                    [ 9, 0, 0, 512 ]
                 ]
             }
 
