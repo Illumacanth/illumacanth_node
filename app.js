@@ -89,6 +89,18 @@ function draw() {
       var begin_range = reply[1];
       var end_range = reply[2];
 
+      if(default_color == null){
+        default_color = "#0055FF";
+      }
+
+      if(begin_range == null){
+        begin_range = 0;
+      }
+
+      if(end_range == null){
+        end_range = 0;
+      }
+
       var R = hexToR(default_color);
       var G = hexToG(default_color);
       var B = hexToB(default_color);
