@@ -122,6 +122,7 @@ function drawCanvas(LEDlist){
   drawArrow(centerX,centerY - 10,current_angle,context);
 
   update_element_list(LEDlist);
+  save_element_list();
 }
 
 function drawRing(centerX,centerY,count,ring_radius,context) {
@@ -213,4 +214,14 @@ function update_element_list() {
     $.each(LEDlist, function(index, LED) {
         $("#element_list").append(element_interface(index, LED, LEDlist) );
     });
+    save_element_list();
+}
+
+function save_element_list() {
+  $.ajax({
+    method: "POST",
+    url: "/save_layout",
+    data: { default_layout: JSON.stringify(LEDlist) }
+  }).done(function( msg )
+  {});
 }

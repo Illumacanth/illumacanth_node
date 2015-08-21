@@ -11,6 +11,7 @@ var save_show = require('./routes/save_show');
 var save_color = require('./routes/save_color');
 var save_begin_range = require('./routes/save_begin_range');
 var save_end_range = require('./routes/save_end_range');
+var save_layout = require('./routes/save_layout');
 var color_picker = require('./routes/color_picker');
 var layout_maker = require('./routes/layout_maker');
 var lightshow = require('./routes/lightshow');
@@ -44,6 +45,7 @@ app.post('/save_show', save_show);
 app.post('/save_color', save_color);
 app.post('/save_begin_range', save_begin_range);
 app.post('/save_end_range', save_end_range);
+app.post('/save_layout', save_layout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
