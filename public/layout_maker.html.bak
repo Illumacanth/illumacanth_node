@@ -40,6 +40,7 @@
 <output for=orientation id=z>0</output>
 <BR>
 
+<img src="illumacanth.jpg" id="image" alt="illumacanth_right" height="100" width="100">
 
 <label for=count>Number of LEDs</label>
 <select id=count oninput="outputUpdate()">

@@ -109,6 +109,9 @@ function drawCanvas(LEDlist){
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
+//  var img=document.getElementById("#image");
+//  context.drawImage(img,10,10,150,180);
+
   for(var i = 0; i < LEDlist.length; i++){
     LEDlist[i].draw();
   }
@@ -193,9 +196,12 @@ function drawArrow(x,y,orientation,context){
 
 function element_interface(index, LED) {
   var box_string = LED.shape + " " + LED.count;
-  box_string += "<SPAN style='color:red' class = 'delete_led' id = '" + index + "'> delete </SPAN><BR>";
-  box_string += "<script> </script>";
+  box_string += "<SPAN style='color:red' class = 'delete_led' id = '" + index + "' onclick = 'delete_element(" + index + ")> delete </SPAN><BR>";
   return box_string;
+}
+
+function delete_element(index) {
+  alert("element " + index + " deleted");
 }
 
 function update_element_list() {
