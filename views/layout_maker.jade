@@ -19,11 +19,11 @@ html(lang='en')
         tr
           td
             label(for='x') X position
-            input#x_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
+            input#x_position(type='range', min='0', max='1100', value='300', oninput='outputUpdate()')
             output#x(for='x_position') 
             br
             label(for='y') Y position
-            input#y_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
+            input#y_position(type='range', min='0', max='750', value='300', oninput='outputUpdate()')
             output#y(for='y_position') 
             br
           td
@@ -46,7 +46,7 @@ html(lang='en')
     table
       tr
         td
-          canvas#LED_map(width='600', height='600', style='border:1px solid #000000;')
+          canvas#LED_map(width='1100', height='750', style='border:1px solid #000000;')
         td
           #element_list
 script.
@@ -66,7 +66,7 @@ script.
               if (value.shape == "ring") {
                   var this_element = new Ring(value.x, value.y, value.count);
               } else {
-                  var this_element = new Line(value.x, value.y);
+                  var this_element = new Line(value.x, value.y, value.angle);
               }
               LEDlist.push(this_element);
           });

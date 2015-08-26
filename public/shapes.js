@@ -6,6 +6,15 @@ var default_data = "";
 
 var LEDlist = [];
 
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+
+Math.degrees = function(radians) {
+  return radians * 180 / Math.PI;
+};
+
+
 var Ring = function (x,y,count) {
   this.x        = x;
   this.y        = y;
@@ -50,19 +59,20 @@ Ring.prototype.update_radius = function() {
   return radius;
 }
 
-var Line = function (x,y) {
+var Line = function (x,y,angle) {
   this.x        = x;
   this.y        = y;
   this.count    = 64;
   this.shape    = "line";
   this.length   = 444;
+  this.angle    = angle;
   var canvas = document.getElementById('LED_map');
   var context = canvas.getContext('2d');
   this.context  = context;
 }
 
 Line.prototype.draw = function() {
-  drawLine(this.x,this.y,this.count,this.length,this.context);
+  drawLine(this.x,this.y,this.count,this.length,this.angle,this.context);
 }
 
 Line.prototype.points = function() {
@@ -80,7 +90,7 @@ function addRing (LEDlist) {
 };
 
 function addLine (LEDlist,x,y) {
-  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber);
+  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,orientation.valueAsNumber);
   LEDlist.push(line);
   drawCanvas(LEDlist);
 }
@@ -147,11 +157,14 @@ function ringPoints(centerX,centerY,count,radius){
   return model;
 }
 
-function drawLine(startx,starty,count,length,context){
+function drawLine(startx,starty,count,length,angle,context){
+  var r = Math.radians(angle);
+  x_f = Math.sin(r);
+  y_f = Math.cos(r);
   for (var i = 0; i < count; i++) {
     
     context.beginPath();
-    context.arc(startx + (i * x_r / 1), starty + (i * y_r), 3, 0, 2 * Math.PI, false);
+    context.arc(startx + (i*x_f), starty + (i*y_f), 3, 0, 2 * Math.PI, false);
     context.fillStyle = 'green';
     context.fill();
   }
