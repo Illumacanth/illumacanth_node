@@ -12,11 +12,16 @@ var save_color = require('./routes/save_color');
 var save_begin_range = require('./routes/save_begin_range');
 var save_end_range = require('./routes/save_end_range');
 var save_layout = require('./routes/save_layout');
+var save_leds = require('./routes/save_leds');
 var color_picker = require('./routes/color_picker');
 var layout_maker = require('./routes/layout_maker');
 var lightshow = require('./routes/lightshow');
 
 var app = express();
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb'}));
 
 var redis = require('redis');
 var redis_client = redis.createClient(); //creates a new client
@@ -46,6 +51,7 @@ app.post('/save_color', save_color);
 app.post('/save_begin_range', save_begin_range);
 app.post('/save_end_range', save_end_range);
 app.post('/save_layout', save_layout);
+app.post('/save_leds', save_leds);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

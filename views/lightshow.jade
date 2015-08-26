@@ -5,6 +5,7 @@ html(lang='en')
     script(type='text/javascript', src='jquery-2.1.4.js')
     script(type='text/javascript', src='jquery-ui.js')
     script(type='text/javascript', src='spectrum.js')
+    script(type='text/javascript', src='show_math.js')
     link(rel='stylesheet', href='spectrum.css')
     link(rel='stylesheet', href='jquery-ui.css')
     | &#x9;
@@ -16,14 +17,16 @@ html(lang='en')
     table
       tr
         td
-          canvas#LED_map(width='600', height='600', style='border:1px solid #000000;')
+          canvas#LED_map(width='1100', height='750', style='border:1px solid #000000;')
         td
           h4 Background Color
           form(action='#')
             input#bgcolor_1(type='text')
+            input( type='checkbox' id='background_on' checked )
           h4 Waves Color
           form(action='#')
             input#waves_color(type='text')
+            input( type='checkbox' id='waves_on' checked )
     script.
       $("#bgcolor_1").spectrum({
           showInput: true,
@@ -33,21 +36,31 @@ html(lang='en')
           showInput: true,
           color: "#F01"
       });
+      var redis_led_data = '!{default_leds}';
       $(document).ready(function() {
+        $.getScript("show_math.js")
+        .done(function() {
           var jqxhr = $.getJSON("./default_LED.json", function() {})
           jqxhr.complete(function(data) {
-              var default_data = JSON.parse(data.responseText);
-              $.each(default_data, function(index, value) {
-                  coords = value.point;
-                  x = coords[0];
-                  y = coords[1];
-                  z = coords[2];
-                  console.log(value.point);
-                  this_element = new LED(x, y, z, 0, 0, 0);
-                  LEDlist.push(this_element);
-              });
+              var default_data = '';
+              if(redis_led_data == ''){
+                var default_data = JSON.parse(data.responseText);
+              }else {
+                var default_data = JSON.parse(redis_led_data);
+              }
+  
+                $.each(default_data, function(index, value) {
+                    coords = value.point;
+                    x = coords[0];
+                    y = coords[1];
+                    z = coords[2];
+                    this_element = new LED(x, y, z, 0, 0, 0);
+                    LEDlist.push(this_element);
+                });
+
               drawCanvas(LEDlist);
           });
+        });
       });
       $.getScript("show_math.js");
 

@@ -27,7 +27,17 @@ html(lang='en')
             output#y(for='y_position') 
             br
           td
-          br
+            select#fadecandy(oninput='outputUpdate()')
+              option(value='0') ZXBVWCHBVLAJMXKF	inside rear left
+              option(value='1') PFDNPLBPHXSPQJAR	inside rear right
+              option(value='2') KWMIOWRPTDIHCFKL	inside middle left
+              option(value='3') ZJJHECKOFVCHYXKD	inside middle right
+              option(value='4') AKUSIKUKNRSRMBOD	inside lip left
+              option(value='5') JBGQFRGMFTGBOHUB	inside lip right
+              option(value='6') NLDFUYVRXPYXMBUT	outside rear left
+              option(value='7') LRRHFLLXFLUFUNAB	outside rear right
+              option(value='8') UAWMHVVVHTIFULCR	outside front left
+              option(value='9') SAAQYYASVRKXGHSN	outside front right
       label(for='angle') Angle of orientation
       input#orientation(type='range', min='0', max='360', value='0', oninput='outputUpdate()')
       output#z(for='orientation') 0
@@ -53,10 +63,7 @@ script.
   $(document).ready(function() {
     $.getScript("shapes.js")
     .done(function() {
-      var jqxhr = $.getJSON("./default_layout.json", function() {})
-          .done(function() {})
-          .fail(function() {})
-          .always(function() {});
+      var jqxhr = $.getJSON("./default_layout.json", function() {});
       jqxhr.complete(function(data) {
         default_data = JSON.parse(data.responseText);
         if(!{default_layout} != null){

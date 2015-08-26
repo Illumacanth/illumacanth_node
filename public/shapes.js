@@ -15,10 +15,11 @@ Math.degrees = function(radians) {
 };
 
 
-var Ring = function (x,y,count) {
+var Ring = function (x,y,count,fc) {
   this.x        = x;
   this.y        = y;
   this.count    = count;
+  this.fc       = 0;
   this.shape     = "ring";
   this.radius = this.update_radius();
   var canvas = document.getElementById('LED_map');
@@ -33,7 +34,7 @@ Ring.prototype.draw = function() {
 
 Ring.prototype.points = function() {
   this.radius = this.update_radius();
-  return ringPoints(this.x,this.y,this.count,this.radius);
+  return ringPoints(this.x,this.y,this.count,this.radius,this.fc);
 };
 
 Ring.prototype.update_radius = function() {
@@ -59,7 +60,7 @@ Ring.prototype.update_radius = function() {
   return radius;
 }
 
-var Line = function (x,y,angle) {
+var Line = function (x,y,angle,fc) {
   this.x        = x;
   this.y        = y;
   this.count    = 64;
@@ -76,7 +77,7 @@ Line.prototype.draw = function() {
 }
 
 Line.prototype.points = function() {
-  return linePoints(this.x,this.y,this.count,this.length);
+  return linePoints(this.x,this.y,this.angle,this.count,this.length,this.fc);
 };
 
 function addRing (LEDlist) {
@@ -84,13 +85,17 @@ function addRing (LEDlist) {
   y = y_position.valueAsNumber;
   var e = document.getElementById("count");
   count = parseInt(e.options[e.selectedIndex].value);
-  ring = new Ring(x,y,count);
+  var fselect = document.getElementById("fadecandy");
+  fc = parseInt(fadecandy.options[fadecandy.selectedIndex].value);
+  ring = new Ring(x,y,count,fc);
   LEDlist.push(ring);
   drawCanvas(LEDlist);
 };
 
 function addLine (LEDlist,x,y) {
-  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,orientation.valueAsNumber);
+  var fselect = document.getElementById("fadecandy");
+  fc = parseInt(fadecandy.options[fadecandy.selectedIndex].value);
+  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,orientation.valueAsNumber,fc);
   LEDlist.push(line);
   drawCanvas(LEDlist);
 }
@@ -130,7 +135,6 @@ function drawCanvas(LEDlist){
   drawArrow(centerX,centerY - 10,current_angle,context);
 
   update_element_list(LEDlist);
-  save_element_list();
 }
 
 function drawRing(centerX,centerY,count,ring_radius,context) {
@@ -143,7 +147,7 @@ function drawRing(centerX,centerY,count,ring_radius,context) {
   }
 }
 
-function ringPoints(centerX,centerY,count,radius){
+function ringPoints(centerX,centerY,count,radius,fc){
   var model = [];
   var index = 0;
 
@@ -170,13 +174,17 @@ function drawLine(startx,starty,count,length,angle,context){
   }
 }
 
-function linePoints(startx,starty,count,length){
+function linePoints(startx,starty,angle,count,length,fc){
   var model = [];
   var index = 0;
+  var r = Math.radians((180 - angle)%360);
 
+  x_f = Math.sin(r);
+
+  y_f = Math.cos(r);
   for (var i = 0; i < count; i++) {
     model[index++] = {
-      point: [startx, starty + i, 0]
+      point: [startx + (i*x_f), starty + (i*y_f), 0, fc]
     }
   }
   return model;
@@ -227,6 +235,7 @@ function update_element_list() {
         $("#element_list").append(element_interface(index, LED, LEDlist) );
     });
     save_element_list();
+    save_leds();
 }
 
 function save_element_list() {
@@ -234,6 +243,15 @@ function save_element_list() {
     method: "POST",
     url: "/save_layout",
     data: { default_layout: JSON.stringify(LEDlist) }
+  }).done(function( msg )
+  {});
+}
+
+function save_leds() {
+  $.ajax({
+    method: "POST",
+    url: "/save_leds",
+    data: { default_leds: outputJSON()}
   }).done(function( msg )
   {});
 }

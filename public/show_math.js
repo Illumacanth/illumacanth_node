@@ -76,37 +76,34 @@
       Show.prototype.updateAll = function(time) {
           for (var l = 0; l < this.LEDlist.length; l++) {
               LED = this.LEDlist[l];
-              var avg_x = 0;
-              var avg_y = 0;
-              var avg_saturation = 0;
-              var avg_lightness = 0;
-              var pat_count = this.patternList.length;
-              for (var p = 0; p < pat_count; p++) {
+              LED.saturation = 0;
+              LED.lightness = 0;
+              for (var p = 0; p < patternList.length; p++) {
+                if(patternList[p].on == true){
                   pattern = this.patternList[p];
-                  var hue = pattern.getHue(LED.x, LED.y);
-                  avg_x = avg_x + Math.cos(Math.radians(hue)) / pat_count;
-                  avg_y = avg_y + Math.sin(Math.radians(hue)) / pat_count;
-                  avg_saturation = avg_saturation + pattern.getSaturation(LED.x, LED.y, LED.z, time) / pat_count;
-                  avg_lightness = avg_lightness + pattern.getLightness(LED.x, LED.y, LED.z, time) / pat_count;
+                  if(LED.saturation + LED.lightness < 50){
+                    LED.hue = pattern.getHue(LED.x, LED.y, time);
+                    LED.saturation = pattern.getSaturation(LED.x,LED.y,time);
+                    LED.lightness = pattern.getLightness(LED.x,LED.y,time);
+                  }
+                }
               }
-              LED.hue = Math.degrees(Math.atan2(avg_y, avg_x));
-              LED.saturation = avg_saturation;
-              LED.lightness = avg_lightness;
           }
-          //  console.log(avg_x.toString() + " " + avg_y.toString() + " " + LED.hue);
       }
       var bgColor = function() {
           this.hue;
           this.saturation;
           this.lightness;
+          this.on = true;
+          this.kind = "bgcolor";
       }
-      bgColor.prototype.getHue = function(x, y, z, time) {
+      bgColor.prototype.getHue = function(x, y, time) {
           return this.hue;
       }
-      bgColor.prototype.getSaturation = function(x, y, z, time) {
+      bgColor.prototype.getSaturation = function(x, y, time) {
           return this.saturation;
       }
-      bgColor.prototype.getLightness = function(x, y, z, time) {
+      bgColor.prototype.getLightness = function(x, y, time) {
           return this.lightness;
       }
       bgColor.prototype.setColor = function(control_id) {
@@ -120,15 +117,18 @@
           this.hue = 270;
           this.saturation = 100;
           this.value = 100;
+          this.on = true;
+          this.kind = "waves";
       }
-      Waves.prototype.getHue = function(x, y, z, time) {
+      Waves.prototype.getHue = function(x, y, time) {
           return this.hue;
       }
-      Waves.prototype.getSaturation = function(x, y, z, time) {
-          return 100;
+      Waves.prototype.getSaturation = function(x, y, time) {
+          return this.saturation * (Math.sin((x+time)/ 100) +2);
       }
-      Waves.prototype.getLightness = function(x, y, z, time) {
-          return this.lightness * (Math.sin(time + x / 100) + 1) / 2;
+      Waves.prototype.getLightness = function(x, y, time) {
+          var light = this.lightness * (Math.sin((x+time)/ 100) + 1.2);
+          return light;
       }
       Waves.prototype.setColor = function(control_id) {
           var t = $(control_id).spectrum("get");
@@ -138,16 +138,18 @@
           this.lightness = hsl.l * 100;
       }
       var patternList = [];
-      var thisBGColor = new bgColor();
-      patternList.push(thisBGColor);
       var thisWaves = new Waves();
       patternList.push(thisWaves);
+      var thisBGColor = new bgColor();
+      patternList.push(thisBGColor);
       var currentShow = new Show(patternList, LEDlist);
-      var time = 0;
+      var time = 0.0;
       setInterval(function() {
-          time++;
+          time = time + 10;
           thisBGColor.setColor("#bgcolor_1");
+          thisBGColor.on = document.getElementById("background_on").checked;
           thisWaves.setColor("#waves_color");
+          thisWaves.on = document.getElementById("waves_on").checked;
           currentShow.updateAll(time);
           drawCanvas(LEDlist);
       }, 100)
