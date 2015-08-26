@@ -6,10 +6,9 @@ var default_data = "";
 
 var LEDlist = [];
 
-var Ring = function (x,y,z,count) {
+var Ring = function (x,y,count) {
   this.x        = x;
   this.y        = y;
-  this.z        = z;
   this.count    = count;
   this.shape     = "ring";
   this.radius = this.update_radius();
@@ -51,10 +50,9 @@ Ring.prototype.update_radius = function() {
   return radius;
 }
 
-var Line = function (x,y,z) {
+var Line = function (x,y) {
   this.x        = x;
   this.y        = y;
-  this.z        = z;
   this.count    = 64;
   this.shape    = "line";
   this.length   = 444;
@@ -64,7 +62,7 @@ var Line = function (x,y,z) {
 }
 
 Line.prototype.draw = function() {
-  drawLine(this.x,this.y,this.zthis.count,this.length,this.context);
+  drawLine(this.x,this.y,this.count,this.length,this.context);
 }
 
 Line.prototype.points = function() {
@@ -76,14 +74,13 @@ function addRing (LEDlist) {
   y = y_position.valueAsNumber;
   var e = document.getElementById("count");
   count = parseInt(e.options[e.selectedIndex].value);
-  var z = 0;
-  ring = new Ring(x,y,z,count);
+  ring = new Ring(x,y,count);
   LEDlist.push(ring);
   drawCanvas(LEDlist);
 };
 
-function addLine (LEDlist,x,y,z) {
-  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,z_position.valueAsNumber);
+function addLine (LEDlist,x,y) {
+  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber);
   LEDlist.push(line);
   drawCanvas(LEDlist);
 }
@@ -150,7 +147,7 @@ function ringPoints(centerX,centerY,count,radius){
   return model;
 }
 
-function drawLine(startx,starty,startz,count,length,context){
+function drawLine(startx,starty,count,length,context){
   for (var i = 0; i < count; i++) {
     
     context.beginPath();
