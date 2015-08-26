@@ -158,7 +158,7 @@ function ringPoints(centerX,centerY,count,radius){
 }
 
 function drawLine(startx,starty,count,length,angle,context){
-  var r = Math.radians(angle);
+  var r = Math.radians((180 - angle)%360);
   x_f = Math.sin(r);
   y_f = Math.cos(r);
   for (var i = 0; i < count; i++) {
