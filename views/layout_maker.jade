@@ -49,8 +49,9 @@ html(lang='en')
         td
           #element_list
 script.
-  $.getScript("shapes.js");
   $(document).ready(function() {
+    $.getScript("shapes.js")
+    .done(function() {
       var jqxhr = $.getJSON("./default_layout.json", function() {})
           .done(function() {})
           .fail(function() {})
@@ -71,6 +72,7 @@ script.
           drawCanvas(LEDlist);
           update_element_list(LEDlist);
       });
+    });
   });
   function update_element_list() {
       $.each(LEDlist, function(index, LED) {
