@@ -2,7 +2,6 @@ var canvas = document.getElementById('LED_map');
 var context = canvas.getContext('2d');
 var x = x_position.valueAsNumber;
 var y = y_position.valueAsNumber;
-var z = z_position.valueAsNumber;
 var default_data = "";
 
 var LEDlist = [];
@@ -65,7 +64,7 @@ var Line = function (x,y,z) {
 }
 
 Line.prototype.draw = function() {
-  drawLine(this.x,this.y,this.count,this.length,this.context);
+  drawLine(this.x,this.y,this.zthis.count,this.length,this.context);
 }
 
 Line.prototype.points = function() {
@@ -83,8 +82,8 @@ function addRing (LEDlist) {
   drawCanvas(LEDlist);
 };
 
-function addLine (LEDlist,x,y) {
-  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,z);
+function addLine (LEDlist,x,y,z) {
+  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,z_position.valueAsNumber);
   LEDlist.push(line);
   drawCanvas(LEDlist);
 }
@@ -151,10 +150,11 @@ function ringPoints(centerX,centerY,count,radius){
   return model;
 }
 
-function drawLine(startx,starty,count,length,context){
+function drawLine(startx,starty,startz,count,length,context){
   for (var i = 0; i < count; i++) {
+    
     context.beginPath();
-    context.arc(startx, starty + i, 3, 0, 2 * Math.PI, false);
+    context.arc(startx + (i * x_r / 1), starty + (i * y_r), 3, 0, 2 * Math.PI, false);
     context.fillStyle = 'green';
     context.fill();
   }

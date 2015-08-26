@@ -15,18 +15,19 @@ html(lang='en')
       |  Illumacanth LED interface
     br
     form(form='', onsubmit='return false')
-      label(for='x') X position
-      input#x_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
-      output#x(for='x_position') 300
-      br
-      label(for='y') Y position
-      input#y_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
-      output#y(for='y_position') 300
-      br
-      label(for='z') Z position
-      input#z_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
-      output#z(for='z_position') 300
-      br
+      table
+        tr
+          td
+            label(for='x') X position
+            input#x_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
+            output#x(for='x_position') 
+            br
+            label(for='y') Y position
+            input#y_position(type='range', min='0', max='600', value='300', oninput='outputUpdate()')
+            output#y(for='y_position') 
+            br
+          td
+          br
       label(for='angle') Angle of orientation
       input#orientation(type='range', min='0', max='360', value='0', oninput='outputUpdate()')
       output#z(for='orientation') 0
@@ -63,9 +64,9 @@ script.
           }
           $.each(default_data, function(index, value) {
               if (value.shape == "ring") {
-                  var this_element = new Ring(value.x, value.y, value.z, value.count);
+                  var this_element = new Ring(value.x, value.y, value.count);
               } else {
-                  var this_element = new Line(value.x, value.y, value.z);
+                  var this_element = new Line(value.x, value.y);
               }
               LEDlist.push(this_element);
           });
@@ -79,3 +80,4 @@ script.
           $("#element_list").append(LED.shape + " " + LED.count + "<BR>");
       })
   }
+  
