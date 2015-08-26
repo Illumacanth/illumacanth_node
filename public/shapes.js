@@ -32,6 +32,8 @@ Ring.prototype.points = function() {
 Ring.prototype.update_radius = function() {
   var radius = 19;
   switch (this.count){
+    case 7:
+      radius = 1;
     case 12:
       radius = 15;
       break;
