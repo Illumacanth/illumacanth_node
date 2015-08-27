@@ -38,7 +38,7 @@ html(lang='en')
       });
       var redis_led_data = '!{default_leds}';
       $(document).ready(function() {
-        $.getScript("show_math.js")
+        $.getScript("server_math.js")
         .done(function() {
           var jqxhr = $.getJSON("./default_LED.json", function() {})
           jqxhr.complete(function(data) {
@@ -63,4 +63,21 @@ html(lang='en')
         });
       });
       $.getScript("show_math.js");
+      var canvas = document.getElementById('LED_map');
+      var context = canvas.getContext('2d');
+      function drawCanvas(LEDlist) {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          for (var i = 0; i < LEDlist.length; i++) {
+              LEDlist[i].draw(context);
+          }
+      }
 
+      setInterval(function() {
+          time = time + 10;
+          thisBGColor.setColor("#bgcolor_1");
+          thisBGColor.on = document.getElementById("background_on").checked;
+          thisWaves.setColor("#waves_color");
+          thisWaves.on = document.getElementById("waves_on").checked;
+          currentShow.updateAll(time);
+          drawCanvas(LEDlist);
+      }, 100)

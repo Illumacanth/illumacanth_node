@@ -90,7 +90,9 @@ module.exports = app;
 var OPC = new require('./opc')
 var client = new OPC('localhost', 7890);
 
-function draw() {
+var show_math = new require('./public/server_math.js');
+
+function drawbak() {
 
     redis_client.mget(['default_color','begin_range','end_range'], function(err, reply) {
       var default_color = reply[0];
@@ -143,5 +145,14 @@ function draw() {
     });
 }
 
-setInterval(draw, 30);
+function draw(default_leds) {
+
+}
+
+redis_client.mget(['default_leds'], function(err, reply) {
+  default_leds = reply[0];
+
+
+  setInterval(draw, 30);
+});
 
