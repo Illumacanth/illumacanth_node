@@ -151,6 +151,13 @@ function drawbak() {
     });
 }
 
+      function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+      function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+      function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+      function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+
+var time = 0;
+
 function draw(default_leds) {
   redis_client.mget(['background_color','background_on','wave_color','wave_on'], function(err, reply) {  
     background_color = reply[0];
@@ -158,13 +165,44 @@ function draw(default_leds) {
     wave_color = reply[2];
     wave_on = (reply[3] === true);
     client.setPixelCount(5120);
+
+      if(background_color == null){
+        background_color = "#0055FF";
+      }
+
+      var bg_R = hexToR(background_color);
+      var bg_G = hexToG(background_color);
+      var bg_B = hexToB(background_color);
+
+      if(wave_color == null){
+        wave_color = "#0055FF";
+      }
+
     leds = JSON.parse(default_leds);
     for (var pixel = 0; pixel < leds.length; pixel++){
       led = leds[pixel];
-      
-      client.setPixel(pixel, 10, 10, 10);
+
+      var w_R = hexToR(wave_color);
+      var w_G = hexToG(wave_color);
+      var w_B = hexToB(wave_color);
+      var w_hsv = RGBtoHSV(w_R,w_G,w_B);
+      var w_h = w_hsv.h;
+      var w_s = w_hsv.s;
+      var w_v = w_hsv.w; 
+    
+      w_s = w_s * (Math.sin((led.x+time)/ 100) +2);
+      w_v = w_v * (Math.sin((led.x+time)/ 100) + 1.2);
+      var w_rgb = HSVtoRGB(w_h,w_s,w_v);
+      w_R = w_rgb.r;
+      w_G = w_rgb.g;
+      w_B = w_rgb.b;
+      client.setPixel(pixel, w_R, w_G, w_B);
+      if(w_s + w_v < 1){
+        client.setPixel(pixel, bg_R, bg_G, bg_B);
+      }
     }
     client.writePixels();
+    time++;
   });
 }
 
@@ -174,4 +212,66 @@ redis_client.mget(['default_leds'], function(err, reply) {
 
   setInterval(function(){draw(default_leds)}, 30);
 });
+
+
+/* accepts parameters
+ * h  Object = {h:x, s:y, v:z}
+ * OR
+ * h, s, v
+*/
+      function HSVtoRGB(h, s, v) {
+            var r, g, b, i, f, p, q, t;
+            if (arguments.length === 1) {
+                s = h.s, v = h.v, h = h.h;
+            }
+            i = Math.floor(h * 6);
+            f = h * 6 - i;
+            p = v * (1 - s);
+            q = v * (1 - f * s);
+            t = v * (1 - (1 - f) * s);
+            switch (i % 6) {
+                case 0: r = v, g = t, b = p; break;
+                case 1: r = q, g = v, b = p; break;
+                case 2: r = p, g = v, b = t; break;
+                case 3: r = p, g = q, b = v; break;
+                case 4: r = t, g = p, b = v; break;
+                case 5: r = v, g = p, b = q; break;
+            }
+          return {
+              r: Math.round(r * 255),
+              g: Math.round(g * 255),
+              b: Math.round(b * 255)
+          };
+      };
+
+/* accepts parameters
+ * r  Object = {r:x, g:y, b:z}
+ * OR
+ * r, g, b
+*/
+function RGBtoHSV(r, g, b) {
+    if (arguments.length === 1) {
+        g = r.g, b = r.b, r = r.r;
+    }
+    var max = Math.max(r, g, b), min = Math.min(r, g, b),
+        d = max - min,
+        h,
+        s = (max === 0 ? 0 : d / max),
+        v = max / 255;
+
+    switch (max) {
+        case min: h = 0; break;
+        case r: h = (g - b) + d * (g < b ? 6: 0); h /= 6 * d; break;
+        case g: h = (b - r) + d * 2; h /= 6 * d; break;
+        case b: h = (r - g) + d * 4; h /= 6 * d; break;
+    }
+
+    return {
+        h: h,
+        s: s,
+        v: v
+    };
+};
+
+
 
