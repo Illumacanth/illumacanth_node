@@ -4,8 +4,6 @@ var x = x_position.valueAsNumber;
 var y = y_position.valueAsNumber;
 var default_data = "";
 
-var LEDlist = [];
-
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
@@ -15,11 +13,12 @@ Math.degrees = function(radians) {
 };
 
 
-var Ring = function (x,y,count,fc) {
+var Ring = function (x,y,count,fc,LEDlist) {
   this.x        = x;
   this.y        = y;
   this.count    = count;
-  this.fc       = 0;
+  this.fc       = fc;
+  this.index    = total_fc(LEDlist,fc) 
   this.shape     = "ring";
   this.radius = this.update_radius();
   var canvas = document.getElementById('LED_map');
@@ -60,13 +59,15 @@ Ring.prototype.update_radius = function() {
   return radius;
 }
 
-var Line = function (x,y,angle,fc) {
+var Line = function (x,y,angle,fc,LEDlist) {
   this.x        = x;
   this.y        = y;
   this.count    = 64;
   this.shape    = "line";
   this.length   = 444;
   this.angle    = angle;
+  this.fc       = fc;
+  this.index    = total_fc(LEDlist,fc);
   var canvas = document.getElementById('LED_map');
   var context = canvas.getContext('2d');
   this.context  = context;
@@ -80,14 +81,23 @@ Line.prototype.points = function() {
   return linePoints(this.x,this.y,this.angle,this.count,this.length,this.fc);
 };
 
+function total_fc(LEDlist,fc){
+  var index = 0;
+  console.log(LEDlist);
+  for(var i=0; i<LEDlist.length; i++) {
+    if(LEDlist[i].fc == fc){index = index + 1}
+  }
+  return index;
+};
+
 function addRing (LEDlist) {
   x = x_position.valueAsNumber;
   y = y_position.valueAsNumber;
   var e = document.getElementById("count");
   count = parseInt(e.options[e.selectedIndex].value);
   var fselect = document.getElementById("fadecandy");
-  fc = parseInt(fadecandy.options[fadecandy.selectedIndex].value);
-  ring = new Ring(x,y,count,fc);
+  fc = parseInt(fselect.options[fadecandy.selectedIndex].value);
+  ring = new Ring(x,y,count,fc,LEDlist);
   LEDlist.push(ring);
   drawCanvas(LEDlist);
 };
@@ -95,7 +105,7 @@ function addRing (LEDlist) {
 function addLine (LEDlist,x,y) {
   var fselect = document.getElementById("fadecandy");
   fc = parseInt(fadecandy.options[fadecandy.selectedIndex].value);
-  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,orientation.valueAsNumber,fc);
+  line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,orientation.valueAsNumber,fc,LEDlist);
   LEDlist.push(line);
   drawCanvas(LEDlist);
 }
@@ -216,7 +226,7 @@ function drawArrow(x,y,orientation,context){
 }
 
 function element_interface (index, LED) {
-  var box_string = LED.shape + " " + LED.count;
+  var box_string = LED.shape + " " + LED.count + " " + LED.fc + "-" + LED.index;
   box_string += "<SPAN style='color:red' class = 'delete_led' id = '" + index;
   box_string += "' onclick = 'delete_element(" + index + ")'>";
   box_string += " delete </SPAN><BR>";

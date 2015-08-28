@@ -60,6 +60,7 @@ html(lang='en')
         td
           #element_list
 script.
+  var LEDlist = [];
   $(document).ready(function() {
     $.getScript("shapes.js")
     .done(function() {
@@ -71,11 +72,12 @@ script.
           }
           $.each(default_data, function(index, value) {
               if (value.shape == "ring") {
-                  var this_element = new Ring(value.x, value.y, value.count);
+                  var this_element = new Ring(value.x, value.y, value.count, value.fc, LEDlist);
+                  LEDlist.push(this_element);
               } else {
-                  var this_element = new Line(value.x, value.y, value.angle);
+                  var this_element = new Line(value.x, value.y, value.angle, value.fc, LEDlist);
+                  LEDlist.push(this_element);
               }
-              LEDlist.push(this_element);
           });
           drawCanvas(LEDlist);
           update_element_list(LEDlist);
