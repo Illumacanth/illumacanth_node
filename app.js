@@ -9,6 +9,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var save_show = require('./routes/save_show');
 var save_color = require('./routes/save_color');
+var save_background_color = require('./routes/save_background_color');
+var save_wave_color = require('./routes/save_wave_color');
+var save_bubbles_color = require('./routes/save_bubbles_color');
+var save_mosaic_color = require('./routes/save_mosaic_color');
 var save_begin_range = require('./routes/save_begin_range');
 var save_end_range = require('./routes/save_end_range');
 var save_layout = require('./routes/save_layout');
@@ -48,6 +52,10 @@ app.use('/layout_maker', layout_maker);
 app.use('/lightshow', lightshow);
 app.post('/save_show', save_show);
 app.post('/save_color', save_color);
+app.post('/save_bubbles_color', save_bubbles_color);
+app.post('/save_background_color', save_background_color);
+app.post('/save_wave_color', save_wave_color);
+app.post('/save_mosaic_color', save_mosaic_color);
 app.post('/save_begin_range', save_begin_range);
 app.post('/save_end_range', save_end_range);
 app.post('/save_layout', save_layout);
@@ -90,7 +98,7 @@ module.exports = app;
 var OPC = new require('./opc')
 var client = new OPC('localhost', 7890);
 
-var show_math = new require('./public/server_math.js');
+var server_math = new require('./public/server_math.js');
 
 function drawbak() {
 
@@ -153,6 +161,6 @@ redis_client.mget(['default_leds'], function(err, reply) {
   default_leds = reply[0];
 
 
-  setInterval(draw, 30);
+  setInterval(function(){draw(default_leds)}, 30);
 });
 

@@ -108,6 +108,13 @@
       }
       bgColor.prototype.setColor = function(control_id) {
           var t = $(control_id).spectrum("get");
+          var hex = $("#bgcolor_1").spectrum("get").toHex();
+//          $.ajax({
+//            method: "POST",
+//            url: "/save_background_color",
+//            data: { background_color: hex }
+//            }).done(function( msg )
+//          {});
           hsl = t.toHsl();
           this.hue = hsl.h;
           this.saturation = hsl.s * 100;

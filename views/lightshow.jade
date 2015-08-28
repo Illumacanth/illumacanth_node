@@ -27,18 +27,63 @@ html(lang='en')
           form(action='#')
             input#waves_color(type='text')
             input( type='checkbox' id='waves_on' checked )
+          h4 Bubbles Color
+          form(action='#')
+            input#bubbles_color(type='text')
+            input( type='checkbox' id='bubbles_on' checked )
+          h4 Mosiac Color
+          form(action='#')
+            input#mosaic_color(type='text')
+            input( type='checkbox' id='mosaic_on' checked )
     script.
       $("#bgcolor_1").spectrum({
           showInput: true,
-          color: "#04F"
+          color: "!{background_color}",
+          change: function(color) {
+            $.ajax({
+              method: "POST",
+              url: "/save_background_color",
+              data: { background_color: color.toHexString() }
+            }).done(function( msg ) { });
+          }
       });
       $("#waves_color").spectrum({
           showInput: true,
-          color: "#F01"
+          color: "!{wave_color}",
+          change: function(color) {
+            $.ajax({
+              method: "POST",
+              url: "/save_wave_color",
+              data: { wave_color: color.toHexString() }
+            }).done(function( msg ) { });
+          }
       });
+      $("#bubbles_color").spectrum({
+          showInput: true,
+          color: "!{bubbles_color}",
+          change: function(color) {
+            $.ajax({
+              method: "POST",
+              url: "/save_bubbles_color",
+              data: { bubbles_color: color.toHexString() }
+            }).done(function( msg ) { });
+          }
+      });
+      $("#mosaic_color").spectrum({
+          showInput: true,
+          color: "!{mosiac_color}",
+          change: function(color) {
+            $.ajax({
+              method: "POST",
+              url: "/save_mosiac_color",
+              data: { mosiac_color: color.toHexString() }
+            }).done(function( msg ) { });
+          }
+      });
+ 
       var redis_led_data = '!{default_leds}';
       $(document).ready(function() {
-        $.getScript("server_math.js")
+        $.getScript("show_math.js")
         .done(function() {
           var jqxhr = $.getJSON("./default_LED.json", function() {})
           jqxhr.complete(function(data) {
@@ -62,9 +107,9 @@ html(lang='en')
           });
         });
       });
-      $.getScript("show_math.js");
+      $.getScript("server_math.js");
       var canvas = document.getElementById('LED_map');
-      var context = canvas.getContext('2d');
+      var context = canvas.getContext('2D');
       function drawCanvas(LEDlist) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           for (var i = 0; i < LEDlist.length; i++) {
