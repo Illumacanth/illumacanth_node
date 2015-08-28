@@ -90,6 +90,24 @@ function total_fc(LEDlist,fc){
   return index;
 };
 
+function compare(element1,element2){
+  if(element1.fc < element2.fc){
+    return -1;
+  }else if(element1.fc > element2.fc){
+    return 1;
+  }else if(element1.fc == element2.fc){
+    if(element1.index < element2.index){
+      return -1;
+    }else if(element1.index > element2.index){
+      return 1;
+    }else if(element1.index == element2.index){
+      return 0;
+    }
+  }else {
+    return 0; //you shouldn't get here
+  }
+};
+
 function addRing (LEDlist) {
   x = x_position.valueAsNumber;
   y = y_position.valueAsNumber;
@@ -99,6 +117,7 @@ function addRing (LEDlist) {
   fc = parseInt(fselect.options[fadecandy.selectedIndex].value);
   ring = new Ring(x,y,count,fc,LEDlist);
   LEDlist.push(ring);
+  LEDlist.sort(compare);
   drawCanvas(LEDlist);
 };
 
@@ -107,6 +126,7 @@ function addLine (LEDlist,x,y) {
   fc = parseInt(fadecandy.options[fadecandy.selectedIndex].value);
   line = new Line(x_position.valueAsNumber,y_position.valueAsNumber,orientation.valueAsNumber,fc,LEDlist);
   LEDlist.push(line);
+  LEDlist.sort(compare);
   drawCanvas(LEDlist);
 }
 
