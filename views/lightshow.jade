@@ -31,7 +31,7 @@ html(lang='en')
           form(action='#')
             input#bubbles_color(type='text')
             input( type='checkbox' id='bubbles_on' checked )
-          h4 Mosiac Color
+          h4 Mosaic Color
           form(action='#')
             input#mosaic_color(type='text')
             input( type='checkbox' id='mosaic_on' checked )
@@ -71,12 +71,12 @@ html(lang='en')
       });
       $("#mosaic_color").spectrum({
           showInput: true,
-          color: "!{mosiac_color}",
+          color: "!{mosaic_color}",
           change: function(color) {
             $.ajax({
               method: "POST",
-              url: "/save_mosiac_color",
-              data: { mosiac_color: color.toHexString() }
+              url: "/save_mosaic_color",
+              data: { mosaic_color: color.toHexString() }
             }).done(function( msg ) { });
           }
       });

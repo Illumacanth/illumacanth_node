@@ -5,7 +5,7 @@ var redis = require('redis');
 /* GET layout_maker. */
 router.get('/', function(req, res) {
   var redis_client = redis.createClient();
-  redis_client.mget(['default_leds','background_color','wave_color','bubbles_color','mosiac_color'], function(err, reply) {
+  redis_client.mget(['default_leds','background_color','wave_color','bubbles_color','mosaic_color'], function(err, reply) {
     var default_leds = reply[0];
     var background_color = reply[1];
     var wave_color = reply[2];
