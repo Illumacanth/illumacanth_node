@@ -98,15 +98,15 @@ module.exports = app;
 var OPC = new require('./opc')
 var client = new OPC('localhost', 7890);
 
-function drawbak() {
+function draw() {
 
-    redis_client.mget(['default_color','begin_range','end_range'], function(err, reply) {
-      var default_color = reply[0];
+    redis_client.mget(['wave_color','begin_range','end_range','background_color'], function(err, reply) {
+      var wave_color = reply[0];
       var begin_range = reply[1];
       var end_range = reply[2];
 
-      if(default_color == null){
-        default_color = "#0055FF";
+      if(wave_color == null){
+        wave_color = "#0055FF";
       }
 
       if(begin_range == null){
@@ -117,9 +117,9 @@ function drawbak() {
         end_range = 0;
       }
 
-      var R = hexToR(default_color);
-      var G = hexToG(default_color);
-      var B = hexToB(default_color);
+      var R_w = hexToR(wave_color);
+      var G_w = hexToG(wave_color);
+      var B_w = hexToB(wave_color);
 
       function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
       function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
@@ -129,7 +129,7 @@ function drawbak() {
 
       var millis = new Date().getTime();
 
-      for (var pixel = 0; pixel < 512; pixel++)
+      for (var pixel = 0; pixel < 5120; pixel++)
       {
         var t = pixel * 0.2 + millis * 0.002;
         var red = 0;
@@ -140,9 +140,9 @@ function drawbak() {
           green = 256;
           blue = 256;
         }else {
-          red = 256 * Math.sin(t) * (R/256);
-          green = 256 * Math.sin(t + 0.3) * (G/256);
-          blue = 256 * Math.sin(t + 0.6) * (B/256);
+          red = 256 * Math.sin(t) * (R_w/256);
+          green = 256 * Math.sin(t + 0.3) * (G_w/256);
+          blue = 256 * Math.sin(t + 0.6) * (B_w/256);
         }
           client.setPixel(pixel, red, green, blue);
       }
@@ -158,7 +158,7 @@ function drawbak() {
 
 var time = 0;
 
-function draw(default_leds) {
+function drawnew(default_leds) {
   redis_client.mget(['background_color','background_on','wave_color','wave_on'], function(err, reply) {  
     background_color = reply[0];
     background_on = (reply[1] === true);
