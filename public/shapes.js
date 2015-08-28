@@ -27,8 +27,12 @@ var Ring = function (x,y,count,fc,LEDlist) {
 };
 
 Ring.prototype.draw = function() {
+  var color = "green";
+  if(selected_fc == this.fc && selected_index == this.index){
+    color = "blue";
+  }
   this.radius = this.update_radius();
-  drawRing(this.x,this.y,this.count,this.radius,this.context);
+  drawRing(this.x,this.y,this.count,this.radius,this.context,color);
 };
 
 Ring.prototype.points = function() {
@@ -74,7 +78,11 @@ var Line = function (x,y,angle,fc,LEDlist) {
 }
 
 Line.prototype.draw = function() {
-  drawLine(this.x,this.y,this.count,this.length,this.angle,this.context);
+  var color = "red";
+  if(selected_fc == this.fc && selected_index == this.index){
+    color = "blue";
+  }
+  drawLine(this.x,this.y,this.count,this.length,this.angle,this.context,color);
 }
 
 Line.prototype.points = function() {
@@ -83,7 +91,6 @@ Line.prototype.points = function() {
 
 function total_fc(LEDlist,fc){
   var index = 0;
-  console.log(LEDlist);
   for(var i=0; i<LEDlist.length; i++) {
     if(LEDlist[i].fc == fc){index = index + 1}
   }
@@ -167,12 +174,12 @@ function drawCanvas(LEDlist){
   update_element_list(LEDlist);
 }
 
-function drawRing(centerX,centerY,count,ring_radius,context) {
+function drawRing(centerX,centerY,count,ring_radius,context,color) {
   for (var i = 0; i < count; i++) {
       var angle = i * 2 * Math.PI / count;
       context.beginPath();
       context.arc(centerX-ring_radius * Math.sin(angle), centerY -ring_radius * Math.cos(angle), 3, 0, 2 * Math.PI, false)
-      context.fillStyle = 'red';
+      context.fillStyle = color;
       context.fill();
   }
 }
@@ -191,7 +198,7 @@ function ringPoints(centerX,centerY,count,radius,fc){
   return model;
 }
 
-function drawLine(startx,starty,count,length,angle,context){
+function drawLine(startx,starty,count,length,angle,context,color){
   var r = Math.radians((180 - angle)%360);
   x_f = Math.sin(r);
   y_f = Math.cos(r);
@@ -199,7 +206,7 @@ function drawLine(startx,starty,count,length,angle,context){
     
     context.beginPath();
     context.arc(startx + (i*x_f), starty + (i*y_f), 3, 0, 2 * Math.PI, false);
-    context.fillStyle = 'green';
+    context.fillStyle = color;
     context.fill();
   }
 }
@@ -245,12 +252,35 @@ function drawArrow(x,y,orientation,context){
   context.stroke();
 }
 
-function element_interface (index, LED) {
-  var box_string = LED.shape + " " + LED.count + " " + LED.fc + "-" + LED.index;
+var selected_index = "1000";
+var selected_fc = "1000";
+
+function element_interface (index, LED, LEDlist) {
+  var box_string = "";
+  box_string += "<SPAN style='color:blue;"
+  if(LED.index == selected_index && LED.fc == selected_fc){
+    box_string += "background-color:#AAAAFF "
+    console.log("gothere"); 
+  }
+  console.log(selected_index + " " + selected_fc);
+  box_string += "' class = 'expand_led' id = '" + index + "'"
+  box_string += " onclick = 'expand_element(" + index + ")'"
+  box_string += " > "
+  box_string += LED.shape + " " + LED.count + " " + LED.fc + "-" + LED.index;
+  box_string += "</SPAN>";
   box_string += "<SPAN style='color:red' class = 'delete_led' id = '" + index;
   box_string += "' onclick = 'delete_element(" + index + ")'>";
   box_string += " delete </SPAN><BR>";
   return box_string;
+}
+
+function expand_element (index) {
+  console.log(index);
+  LED = LEDlist[index];
+  selected_index = LED.index;
+  selected_fc = LED.fc;
+  update_element_list();
+  drawCanvas(LEDlist);
 }
 
 function delete_element (LED) {
