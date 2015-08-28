@@ -260,9 +260,7 @@ function element_interface (index, LED, LEDlist) {
   box_string += "<SPAN style='color:blue;"
   if(LED.index == selected_index && LED.fc == selected_fc){
     box_string += "background-color:#AAAAFF "
-    console.log("gothere"); 
   }
-  console.log(selected_index + " " + selected_fc);
   box_string += "' class = 'expand_led' id = '" + index + "'"
   box_string += " onclick = 'expand_element(" + index + ")'"
   box_string += " > "
