@@ -64,6 +64,8 @@ function RGBtoHSV(r, g, b) {
           return radians * 180 / Math.PI;
       };
 
+module.exports = {
+
       var LED = function(x, y, z, hue, saturation, lightness) {
           this.x = x;
           this.y = y;
@@ -73,6 +75,7 @@ function RGBtoHSV(r, g, b) {
           this.lightness = lightness;
           this.color();
       }
+}
       LED.prototype.color = function() {
           return "hsl(" + this.hue.toString() + "," + this.saturation.toString() + "%," + this.lightness.toString() + "%)";
       }

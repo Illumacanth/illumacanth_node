@@ -151,8 +151,6 @@ function drawbak() {
     });
 }
 
-var server_math = new require('./public/server_math.js');
-
 function draw(default_leds) {
   redis_client.mget(['background_color','background_on','wave_color','wave_on'], function(err, reply) {  
     background_color = reply[0];
