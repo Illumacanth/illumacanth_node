@@ -31,6 +31,8 @@ var redis = require('redis');
 var redis_client = redis.createClient(); //creates a new client
 
 // view engine setup
+//app.set('port', process.env.PORT || 3000);
+app.listen(10101);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
