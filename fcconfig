@@ -1,5 +1,5 @@
     {
-        "listen": ["127.0.0.1", 7890],
+        "listen": [null, 7890],
         "verbose": true,
 
         "color": {
@@ -10,6 +10,13 @@
         "devices": [
             {
                 "type": "fadecandy",
+                "serial": "PFDNPLBPHXSPQJAR",
+                "map": [
+                    [ 0, 0, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
                 "serial": "ZXBVWCHBVLAJMXKF",
                 "led": false,
                 "map": [
@@ -18,65 +25,72 @@
             },
             {
                 "type": "fadecandy",
-                "serial": "PFDNPLBPHXSPQJAR",
-                "map": [
-                    [ 1, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
                 "serial": "KWMIOWRPTDIHCFKL",
                 "map": [
-                    [ 2, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "ZJJHECKOFVCHYXKD",
                 "map": [
-                    [ 3, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "AKUSIKUKNRSRMBOD",
                 "map": [
-                    [ 4, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "JBGQFRGMFTGBOHUB",
                 "map": [
-                    [ 5, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "NLDFUYVRXPYXMBUT",
                 "map": [
-                    [ 6, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "LRRHFLLXFLUFUNAB",
                 "map": [
-                    [ 7, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "UAWMHVVVHTIFULCR",
                 "map": [
-                    [ 8, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "SAAQYYASVRKXGHSN",
                 "map": [
-                    [ 9, 0, 0, 512 ]
+                    [ 0, 0, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
+                "serial": "QGCGPFKADJQROBIZ",
+                "map": [
+                    [ 0, 0, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
+                "serial": "NLDFUYVRXPYXMBUT",
+                "map": [
+                    [ 0, 0, 0, 512 ]
                 ]
             }
 

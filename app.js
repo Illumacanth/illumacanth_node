@@ -104,6 +104,7 @@ function draw() {
       var wave_color = reply[0];
       var begin_range = reply[1];
       var end_range = reply[2];
+      var background_color = reply[3];
 
       if(wave_color == null){
         wave_color = "#0055FF";
@@ -121,6 +122,10 @@ function draw() {
       var G_w = hexToG(wave_color);
       var B_w = hexToB(wave_color);
 
+      var R_b = hexToR(background_color);
+      var G_b = hexToG(background_color);
+      var B_b = hexToB(background_color);
+
       function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
       function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
       function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
@@ -129,7 +134,7 @@ function draw() {
 
       var millis = new Date().getTime();
 
-      for (var pixel = 0; pixel < 5120; pixel++)
+      for (var pixel = 0; pixel < 6144; pixel++)
       {
         var t = pixel * 0.2 + millis * 0.002;
         var red = 0;
@@ -139,10 +144,14 @@ function draw() {
           red = 256;
           green = 256;
           blue = 256;
-        }else {
-          red = 256 * Math.sin(t) * (R_w/256);
-          green = 256 * Math.sin(t + 0.3) * (G_w/256);
-          blue = 256 * Math.sin(t + 0.6) * (B_w/256);
+        }else if(pixel < 5120){
+          red = 256 * Math.sin(t/2) * (R_w/256);
+          green = 256 * Math.sin(t/2 + 0.2) * (G_w/256);
+          blue = 256 * Math.sin(t/2 + 0.6) * (B_w/256);
+        }else{
+          red = 256 * Math.sin(t/2) * (R_b/256);
+          green = 256 * Math.sin(t/2 + 0.3) * (G_b/256);
+          blue = 256 * Math.sin(t/2 + 0.6) * (B_b/256);
         }
           client.setPixel(pixel, red, green, blue);
       }
