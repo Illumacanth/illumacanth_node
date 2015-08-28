@@ -140,18 +140,19 @@ function draw() {
         var red = 0;
         var green = 0;
         var blue = 0;
+        var increase = 0.8;
         if(pixel > begin_range && pixel < end_range){
           red = 256;
           green = 256;
           blue = 256;
         }else if(pixel < 5120){
-          red = 256 * Math.sin(t/2) * (R_w/256);
-          green = 256 * Math.sin(t/2 + 0.2) * (G_w/256);
-          blue = 256 * Math.sin(t/2 + 0.6) * (B_w/256);
+          red = 256 * (Math.sin(t/2)) * (R_w/256);
+          green = 256 * (Math.sin(t/2 + 0.2)) * (G_w/256);
+          blue = 256 * (Math.sin(t/2 + 0.6)) * (B_w/256);
         }else{
-          red = 256 * Math.sin(t/2) * (R_b/256);
-          green = 256 * Math.sin(t/2 + 0.3) * (G_b/256);
-          blue = 256 * Math.sin(t/2 + 0.6) * (B_b/256);
+          red = 256 * (Math.sin(t/2) + increase) * (R_b/256);
+          green = 256 * (Math.sin(t/2 + 0.3) + increase) * (G_b/256);
+          blue = 256 * (Math.sin(t/2 + 0.6) + increase) * (B_b/256);
         }
           client.setPixel(pixel, red, green, blue);
       }
