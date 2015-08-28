@@ -134,7 +134,7 @@ function draw() {
 
       var millis = new Date().getTime();
 
-      for (var pixel = 0; pixel < 6144; pixel++)
+      for (var pixel = 0; pixel < 6656; pixel++)
       {
         var t = pixel * 0.2 + millis * 0.002;
         var red = 0;
@@ -219,7 +219,7 @@ redis_client.mget(['default_leds'], function(err, reply) {
   default_leds = reply[0];
 
 
-  setInterval(function(){draw(default_leds)}, 30);
+  setInterval(function(){draw(default_leds)}, 100);
 });
 
 
