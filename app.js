@@ -8,11 +8,10 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var save_show = require('./routes/save_show');
-var save_color = require('./routes/save_color');
 var save_background_color = require('./routes/save_background_color');
+var save_background_on = require('./routes/save_background_on');
 var save_wave_color = require('./routes/save_wave_color');
-var save_bubbles_color = require('./routes/save_bubbles_color');
-var save_mosaic_color = require('./routes/save_mosaic_color');
+var save_wave_on = require('./routes/save_wave_on');
 var save_begin_range = require('./routes/save_begin_range');
 var save_end_range = require('./routes/save_end_range');
 var save_layout = require('./routes/save_layout');
@@ -53,11 +52,10 @@ app.use('/color_picker', color_picker);
 app.use('/layout_maker', layout_maker);
 app.use('/lightshow', lightshow);
 app.post('/save_show', save_show);
-app.post('/save_color', save_color);
-app.post('/save_bubbles_color', save_bubbles_color);
 app.post('/save_background_color', save_background_color);
+app.post('/save_background_on', save_background_on);
 app.post('/save_wave_color', save_wave_color);
-app.post('/save_mosaic_color', save_mosaic_color);
+app.post('/save_wave_on', save_wave_on);
 app.post('/save_begin_range', save_begin_range);
 app.post('/save_end_range', save_end_range);
 app.post('/save_layout', save_layout);
@@ -99,8 +97,6 @@ module.exports = app;
 
 var OPC = new require('./opc')
 var client = new OPC('localhost', 7890);
-
-var server_math = new require('./public/server_math.js');
 
 function drawbak() {
 
@@ -155,14 +151,19 @@ function drawbak() {
     });
 }
 
+var server_math = new require('./public/server_math.js');
+
 function draw(default_leds) {
-  redis_client.mget(['background_color','wave_color'], function(err, reply) {  
+  redis_client.mget(['background_color','background_on','wave_color','wave_on'], function(err, reply) {  
     background_color = reply[0];
-    wave_color = reply[1];
+    background_on = (reply[1] === true);
+    wave_color = reply[2];
+    wave_on = (reply[3] === true);
     client.setPixelCount(5120);
     leds = JSON.parse(default_leds);
     for (var pixel = 0; pixel < leds.length; pixel++){
-
+      led = leds[pixel];
+      
       client.setPixel(pixel, 10, 10, 10);
     }
     client.writePixels();

@@ -22,11 +22,11 @@ html(lang='en')
           h4 Background Color
           form(action='#')
             input#bgcolor_1(type='text')
-            input( type='checkbox' id='background_on' checked )
+            input( type='checkbox' id='background_on' checked=background_on )
           h4 Waves Color
           form(action='#')
-            input#waves_color(type='text')
-            input( type='checkbox' id='waves_on' checked )
+            input#wave_color(type='text')
+            input( type='checkbox' id='wave_on' checked=wave_on )
     script.
       $("#bgcolor_1").spectrum({
           showInput: true,
@@ -39,7 +39,15 @@ html(lang='en')
             }).done(function( msg ) { });
           }
       });
-      $("#waves_color").spectrum({
+      $('#background_on').change(function() {
+        var is_checked = document.getElementById("background_on").checked
+            $.ajax({
+              method: "POST",
+              url: "/save_background_on",
+              data: { background_on: is_checked }
+            }).done(function( msg ) { });
+      });
+      $("#wave_color").spectrum({
           showInput: true,
           color: "!{wave_color}",
           change: function(color) {
@@ -50,7 +58,14 @@ html(lang='en')
             }).done(function( msg ) { });
           }
       });
- 
+      $('#wave_on').change(function() {
+        var is_checked = document.getElementById("wave_on").checked
+            $.ajax({
+              method: "POST",
+              url: "/save_wave_on",
+              data: { wave_on: is_checked }
+            }).done(function( msg ) { });
+      });
       var redis_led_data = '!{default_leds}';
       $(document).ready(function() {
         $.getScript("show_math.js")
@@ -91,8 +106,8 @@ html(lang='en')
           time = time + 10;
           thisBGColor.setColor("#bgcolor_1");
           thisBGColor.on = document.getElementById("background_on").checked;
-          thisWaves.setColor("#waves_color");
-          thisWaves.on = document.getElementById("waves_on").checked;
+          thisWaves.setColor("#wave_color");
+          thisWaves.on = document.getElementById("wave_on").checked;
           currentShow.updateAll(time);
           drawCanvas(LEDlist);
       }, 100)

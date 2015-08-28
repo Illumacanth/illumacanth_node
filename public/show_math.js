@@ -119,7 +119,7 @@
           this.saturation = 100;
           this.value = 100;
           this.on = true;
-          this.kind = "waves";
+          this.kind = "wave";
       }
       Waves.prototype.getHue = function(x, y, time) {
           return this.hue;
@@ -149,8 +149,8 @@
           time = time + 10;
           thisBGColor.setColor("#bgcolor_1");
           thisBGColor.on = document.getElementById("background_on").checked;
-          thisWaves.setColor("#waves_color");
-          thisWaves.on = document.getElementById("waves_on").checked;
+          thisWaves.setColor("#wave_color");
+          thisWaves.on = document.getElementById("wave_on").checked;
           currentShow.updateAll(time);
           drawCanvas(LEDlist);
       }, 100)
