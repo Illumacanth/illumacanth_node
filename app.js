@@ -156,7 +156,17 @@ function drawbak() {
 }
 
 function draw(default_leds) {
+  redis_client.mget(['background_color','wave_color'], function(err, reply) {  
+    background_color = reply[0];
+    wave_color = reply[1];
+    client.setPixelCount(5120);
+    leds = JSON.parse(default_leds);
+    for (var pixel = 0; pixel < leds.length; pixel++){
 
+      client.setPixel(pixel, 10, 10, 10);
+    }
+    client.writePixels();
+  });
 }
 
 redis_client.mget(['default_leds'], function(err, reply) {

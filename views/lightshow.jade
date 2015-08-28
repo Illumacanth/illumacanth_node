@@ -27,14 +27,6 @@ html(lang='en')
           form(action='#')
             input#waves_color(type='text')
             input( type='checkbox' id='waves_on' checked )
-          h4 Bubbles Color
-          form(action='#')
-            input#bubbles_color(type='text')
-            input( type='checkbox' id='bubbles_on' checked )
-          h4 Mosaic Color
-          form(action='#')
-            input#mosaic_color(type='text')
-            input( type='checkbox' id='mosaic_on' checked )
     script.
       $("#bgcolor_1").spectrum({
           showInput: true,
@@ -55,28 +47,6 @@ html(lang='en')
               method: "POST",
               url: "/save_wave_color",
               data: { wave_color: color.toHexString() }
-            }).done(function( msg ) { });
-          }
-      });
-      $("#bubbles_color").spectrum({
-          showInput: true,
-          color: "!{bubbles_color}",
-          change: function(color) {
-            $.ajax({
-              method: "POST",
-              url: "/save_bubbles_color",
-              data: { bubbles_color: color.toHexString() }
-            }).done(function( msg ) { });
-          }
-      });
-      $("#mosaic_color").spectrum({
-          showInput: true,
-          color: "!{mosaic_color}",
-          change: function(color) {
-            $.ajax({
-              method: "POST",
-              url: "/save_mosaic_color",
-              data: { mosaic_color: color.toHexString() }
             }).done(function( msg ) { });
           }
       });
