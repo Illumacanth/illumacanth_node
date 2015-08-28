@@ -68,7 +68,7 @@ script.
       jqxhr.complete(function(data) {
         default_data = JSON.parse(data.responseText);
         if('!{default_layout}' != ''){
-          default_data = '!{default_layout}';
+          default_data = !{default_layout};
           }
           $.each(default_data, function(index, value) {
               if (value.shape == "ring") {
