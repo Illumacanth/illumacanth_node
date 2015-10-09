@@ -118,6 +118,10 @@ function draw() {
         end_range = 0;
       }
 
+      if(background_color == null){
+        background_color = "#993300";
+      }
+
       var R_w = hexToR(wave_color);
       var G_w = hexToG(wave_color);
       var B_w = hexToB(wave_color);
