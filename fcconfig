@@ -10,28 +10,6 @@
         "devices": [
             {
                 "type": "fadecandy",
-                "serial": "PFDNPLBPHXSPQJAR",
-                "map": [
-                    [ 0, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
-                "serial": "ZXBVWCHBVLAJMXKF",
-                "led": false,
-                "map": [
-                    [ 0, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
-                "serial": "KWMIOWRPTDIHCFKL",
-                "map": [
-                    [ 0, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
                 "serial": "ZJJHECKOFVCHYXKD",
                 "map": [
                     [ 0, 0, 0, 512 ]
@@ -39,60 +17,76 @@
             },
             {
                 "type": "fadecandy",
+                "serial": "JBGQFRGMFTGBOHUB",
+                "led": false,
+                "map": [
+                    [ 0, 512, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
+                "serial": "KWMIOWRPTDIHCFKL",
+                "map": [
+                    [ 0, 1024, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
+                "serial": "PFDNPLBPHXSPQJAR",
+                "map": [
+                    [ 0, 1536, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
                 "serial": "AKUSIKUKNRSRMBOD",
                 "map": [
-                    [ 0, 0, 0, 512 ]
+                    [ 0, 2048, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
-                "serial": "JBGQFRGMFTGBOHUB",
+                "serial": "ZXBVWCHBVLAJMXKF",
                 "map": [
-                    [ 0, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
-                "serial": "NLDFUYVRXPYXMBUT",
-                "map": [
-                    [ 0, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
-                "serial": "LRRHFLLXFLUFUNAB",
-                "map": [
-                    [ 0, 0, 0, 512 ]
+                    [ 0, 2560, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "UAWMHVVVHTIFULCR",
                 "map": [
-                    [ 0, 0, 0, 512 ]
-                ]
-            },
-            {
-                "type": "fadecandy",
-                "serial": "SAAQYYASVRKXGHSN",
-                "map": [
-                    [ 0, 0, 0, 512 ]
+                    [ 0, 3584, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "QGCGPFKADJQROBIZ",
                 "map": [
-                    [ 0, 0, 0, 512 ]
+                    [ 0, 4096, 0, 512 ]
                 ]
             },
             {
                 "type": "fadecandy",
                 "serial": "NLDFUYVRXPYXMBUT",
                 "map": [
-                    [ 0, 0, 0, 512 ]
+                    [ 0, 4608, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
+                "serial": "LRRHFLLXFLUFUNAB",
+                "map": [
+                    [ 0, 5120, 0, 512 ]
+                ]
+            },
+            {
+                "type": "fadecandy",
+                "serial": "SAAQYYASVRKXGHSN",
+                "map": [
+                    [ 0, 5632, 0, 512 ]
                 ]
             }
 
         ]
     }
+

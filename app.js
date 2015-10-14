@@ -97,7 +97,7 @@ module.exports = app;
 
 var OPC = new require('./opc')
 var client = new OPC('localhost', 7890);
-
+var drift = 0;
 function draw() {
 
     redis_client.mget(['wave_color','begin_range','end_range','background_color'], function(err, reply) {
@@ -140,23 +140,23 @@ function draw() {
 
       for (var pixel = 0; pixel < 6656; pixel++)
       {
-        var t = pixel * 0.2 + millis * 0.002;
+        var t = pixel * 0.05 + millis * 0.001;
         var red = 0;
         var green = 0;
         var blue = 0;
-        var increase = 0.8;
+        var increase = 1.1;
         if(pixel > begin_range && pixel < end_range){
           red = 256;
           green = 256;
           blue = 256;
         }else if(pixel < 5120){
-          red = 256 * (Math.sin(t/2)) * (R_w/256);
-          green = 256 * (Math.sin(t/2 + 0.2)) * (G_w/256);
-          blue = 256 * (Math.sin(t/2 + 0.6)) * (B_w/256);
+          red = 256 * (Math.sin(t/2) + increase) * (R_w/256);
+          green = 256 * (Math.sin(t/2 + 0.2)+ increase) * (G_w/256);
+          blue = 256 * (Math.sin(t/2 + 0.6) + increase) * (B_w/256);
         }else{
           red = 256 * (Math.sin(t/2) + increase) * (R_b/256);
           green = 256 * (Math.sin(t/2 + 0.3) + increase) * (G_b/256);
-          blue = 256 * (Math.sin(t/2 + 0.6) + increase) * (B_b/256);
+          blue = 256 * (Math.sin(t/2 + 0.5) + increase) * (B_b/256);
         }
           client.setPixel(pixel, red, green, blue);
       }
@@ -167,54 +167,6 @@ function draw() {
 
 var time = 0;
 
-function drawnew(default_leds) {
-  redis_client.mget(['background_color','background_on','wave_color','wave_on'], function(err, reply) {  
-    background_color = reply[0];
-    background_on = (reply[1] === true);
-    wave_color = reply[2];
-    wave_on = (reply[3] === true);
-    client.setPixelCount(5120);
-
-      if(background_color == null){
-        background_color = "#0055FF";
-      }
-
-      var bg_R = hexToR(background_color);
-      var bg_G = hexToG(background_color);
-      var bg_B = hexToB(background_color);
-
-      if(wave_color == null){
-        wave_color = "#0055FF";
-      }
-
-    leds = JSON.parse(default_leds);
-    for (var pixel = 0; pixel < leds.length; pixel++){
-      led = leds[pixel];
-
-      var w_R = hexToR(wave_color);
-      var w_G = hexToG(wave_color);
-      var w_B = hexToB(wave_color);
-      var w_hsv = RGBtoHSV(w_R,w_G,w_B);
-      var w_h = w_hsv.h;
-      var w_s = w_hsv.s;
-      var w_v = w_hsv.w; 
-    
-      w_s = w_s * (Math.sin((led.x+time)/ 100) +2);
-      w_v = w_v * (Math.sin((led.x+time)/ 100) + 1.2);
-      var w_rgb = HSVtoRGB(w_h,w_s,w_v);
-      w_R = w_rgb.r;
-      w_G = w_rgb.g;
-      w_B = w_rgb.b;
-      client.setPixel(pixel, w_R, w_G, w_B);
-      if(w_s + w_v < 1){
-        client.setPixel(pixel, bg_R, bg_G, bg_B);
-      }
-    }
-    client.writePixels();
-    time++;
-  });
-}
-
 redis_client.mget(['default_leds'], function(err, reply) {
   default_leds = reply[0];
 
@@ -222,4 +174,5 @@ redis_client.mget(['default_leds'], function(err, reply) {
   setInterval(function(){draw(default_leds)}, 100);
 });
 
+var drawnew = require('./drawnew.js');
 var color_math = require('./color_math.js');
