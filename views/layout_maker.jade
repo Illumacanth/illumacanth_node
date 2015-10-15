@@ -67,10 +67,9 @@ script.
       var jqxhr = $.getJSON("./default_layout.json", function() {});
       jqxhr.complete(function(data) {
         default_data = JSON.parse(data.responseText);
-        if('!{default_layout}' != ''){
-          default_data = !{default_layout};
-          }
-          $.each(default_data, function(index, value) {
+        if('!{default_layout}' != '[]'){
+          default_data = '!{default_layout}';
+          $.each(JSON.parse(default_data), function(index, value) {
               if (value.shape == "ring") {
                   var this_element = new Ring(value.x, value.y, value.count, value.fc, LEDlist);
                   LEDlist.push(this_element);
@@ -79,14 +78,17 @@ script.
                   LEDlist.push(this_element);
               }
           });
+          }
           drawCanvas(LEDlist);
           update_element_list(LEDlist);
       });
     });
   });
   function update_element_list() {
+    if(LEDlist != null){
       $.each(LEDlist, function(index, LED) {
           $("#element_list").append(LED.shape + " " + LED.count + "<BR>");
       })
+    }
   }
   
